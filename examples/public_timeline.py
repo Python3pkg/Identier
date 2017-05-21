@@ -8,4 +8,4 @@ pt_xml = identica.getPublicTimeline()
 statuses = identica.getValues(pt_xml,"text")
 
 for value in statuses:
-    print value
+    print(value)

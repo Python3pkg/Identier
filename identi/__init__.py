@@ -1,1 +1,1 @@
-from Identi import Identica
+from .Identi import Identica

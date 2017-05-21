@@ -21,13 +21,13 @@
 # Author:   Sibi <sibi@psibi.in>
 
 import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 from xml.dom import minidom
 from django.utils.encoding import smart_str #Need this to avoid Unicode errors. Fixme: Use other library for unicode handling rather than django's.
-from identica_mappings import base_url, api_table
+from .identica_mappings import base_url, api_table
 from oauth_hook import OAuthHook
-from error import IdentiError
+from .error import IdentiError
 
 class Identica:
     def __init__(self,identi_token=None,identi_secret=None,oauth_token=None,oauth_secret=None,callback_url=None,header=None):
@@ -64,7 +64,7 @@ class Identica:
         #Register functions. (**kwargs - For unpacking dictionaries)
         def setFunc(key):
             return lambda **kwargs: self._constructFunc(key, **kwargs)
-        for key in api_table.keys():
+        for key in list(api_table.keys()):
             self.__dict__[key] = setFunc(key)
 
     def _constructFunc(self,api_call, **kwargs):
@@ -89,7 +89,7 @@ class Identica:
         method = method.lower()
 
         if method == 'get':
-            url = '%s?%s' % (url,urllib.urlencode(params))
+            url = '%s?%s' % (url,urllib.parse.urlencode(params))
         else:
             myargs = params
             
@@ -137,7 +137,7 @@ class Identica:
         if callback_url and not oauth_callback_confirmed:
             auth_url_params['oauth_callback'] = callback_url
 
-        request_tokens['auth_url'] = self.authenticate_url + '?' + urllib.urlencode(auth_url_params)
+        request_tokens['auth_url'] = self.authenticate_url + '?' + urllib.parse.urlencode(auth_url_params)
 
         return request_tokens
 

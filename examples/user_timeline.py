@@ -7,4 +7,4 @@ ut_xml = identica.getUserTimeline(screen_name="psibi")
 statuses = identica.getValues(ut_xml,"text")
 
 for value in statuses:
-    print value
+    print(value)
